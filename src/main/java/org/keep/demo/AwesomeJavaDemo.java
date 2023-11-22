@@ -10,11 +10,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2023/10/18 22:21
  */
 @SpringBootApplication
-public class DemoApplication {
+public class AwesomeJavaDemo {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(AwesomeJavaDemo.class, args);
     }
 
 }

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.keep.demo.mapper.primary.MemberMapper">
+  <resultMap id="BaseResultMap" type="org.keep.demo.entity.primary.Member">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone_number" jdbcType="INTEGER" property="phoneNumber" />
+    <result column="age" jdbcType="TINYINT" property="age" />
+    <result column="hobbies" jdbcType="VARCHAR" property="hobbies" />
+    <result column="skill" jdbcType="VARCHAR" property="skill" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="marriage" jdbcType="BIT" property="marriage" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, `name`, phone_number, age, hobbies, skill, education, marriage
+  </sql>
+  <select id="selectByExample" parameterType="org.keep.demo.entity.primary.MemberExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from member
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from member
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from member
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.keep.demo.entity.primary.MemberExample">
+    delete from member
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.keep.demo.entity.primary.Member">
+    insert into member (id, `name`, phone_number, 
+      age, hobbies, skill, 
+      education, marriage)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=INTEGER}, 
+      #{age,jdbcType=TINYINT}, #{hobbies,jdbcType=VARCHAR}, #{skill,jdbcType=VARCHAR}, 
+      #{education,jdbcType=VARCHAR}, #{marriage,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="org.keep.demo.entity.primary.Member">
+    insert into member
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="phoneNumber != null">
+        phone_number,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+      <if test="hobbies != null">
+        hobbies,
+      </if>
+      <if test="skill != null">
+        skill,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="marriage != null">
+        marriage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null">
+        #{phoneNumber,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=TINYINT},
+      </if>
+      <if test="hobbies != null">
+        #{hobbies,jdbcType=VARCHAR},
+      </if>
+      <if test="skill != null">
+        #{skill,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null">
+        #{marriage,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.keep.demo.entity.primary.MemberExample" resultType="java.lang.Long">
+    select count(*) from member
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update member
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=INTEGER},
+      </if>
+      <if test="row.name != null">
+        `name` = #{row.name,jdbcType=VARCHAR},
+      </if>
+      <if test="row.phoneNumber != null">
+        phone_number = #{row.phoneNumber,jdbcType=INTEGER},
+      </if>
+      <if test="row.age != null">
+        age = #{row.age,jdbcType=TINYINT},
+      </if>
+      <if test="row.hobbies != null">
+        hobbies = #{row.hobbies,jdbcType=VARCHAR},
+      </if>
+      <if test="row.skill != null">
+        skill = #{row.skill,jdbcType=VARCHAR},
+      </if>
+      <if test="row.education != null">
+        education = #{row.education,jdbcType=VARCHAR},
+      </if>
+      <if test="row.marriage != null">
+        marriage = #{row.marriage,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update member
+    set id = #{row.id,jdbcType=INTEGER},
+      `name` = #{row.name,jdbcType=VARCHAR},
+      phone_number = #{row.phoneNumber,jdbcType=INTEGER},
+      age = #{row.age,jdbcType=TINYINT},
+      hobbies = #{row.hobbies,jdbcType=VARCHAR},
+      skill = #{row.skill,jdbcType=VARCHAR},
+      education = #{row.education,jdbcType=VARCHAR},
+      marriage = #{row.marriage,jdbcType=BIT}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.keep.demo.entity.primary.Member">
+    update member
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null">
+        phone_number = #{phoneNumber,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=TINYINT},
+      </if>
+      <if test="hobbies != null">
+        hobbies = #{hobbies,jdbcType=VARCHAR},
+      </if>
+      <if test="skill != null">
+        skill = #{skill,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null">
+        marriage = #{marriage,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.keep.demo.entity.primary.Member">
+    update member
+    set `name` = #{name,jdbcType=VARCHAR},
+      phone_number = #{phoneNumber,jdbcType=INTEGER},
+      age = #{age,jdbcType=TINYINT},
+      hobbies = #{hobbies,jdbcType=VARCHAR},
+      skill = #{skill,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      marriage = #{marriage,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
