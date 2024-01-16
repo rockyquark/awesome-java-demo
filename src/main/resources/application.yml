@@ -1,15 +1,20 @@
 spring:
   application:
-    name: demo
+    name: awesome-java-demo
   datasource:
     primary:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://114.132.246.98:3306/primary
+      url: jdbc:mysql://114.132.246.98:3306/primary?allowedPublicKey=true
       password: public
       username: public
     secondary:
       driver-class-name: org.mariadb.jdbc.Driver
       url: jdbc:mariadb://127.0.0.1:3308/secondary
+      password: public
+      username: public
+    third:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://114.132.246.98:3306/icvr_speech
       password: public
       username: public
 
