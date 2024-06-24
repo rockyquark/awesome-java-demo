@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!--覆盖生成XML文件-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+        <!--移除getter setter 方法-->
+        <plugin type="org.keep.demo.generator.CustomPlugin" />
+        <!--分页-->
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+
+        <!-- 不生成注释 -->
+        <commentGenerator type="org.keep.demo.generator.MyCommentGenerator">
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://114.132.246.98:3306/icvr_speech"
+                        userId="public"
+                        password="public">
+        </jdbcConnection>
+
+        <!-- 实体类的位置 -->
+        <javaModelGenerator targetProject="src\main\java"
+                            targetPackage="org.keep.demo.entity.speech">
+        </javaModelGenerator>
+
+        <!-- mapper xml的位置 -->
+        <sqlMapGenerator targetProject="src\main\resources"
+                         targetPackage="mapper/speech"/>
+
+        <!-- mapper类的位置 -->
+        <javaClientGenerator targetProject="src\main\java"
+                             targetPackage="org.keep.demo.mapper.speech"
+                             type="XMLMAPPER" />
+
+
+        <table tableName="cps_error_record" domainObjectName="ErrorRecord"/>
+        <table tableName="cps_audio_task_schedule" domainObjectName="AudioTaskSchedule"/>
+
+    </context>
+</generatorConfiguration>

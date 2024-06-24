@@ -1,39 +1,18 @@
-package org.keep.demo;
-
-import lombok.extern.slf4j.Slf4j;
-import org.keep.demo.etd.AudioTranscodeErrorEnum;
-import org.keep.demo.etd.ErrorManager;
-import org.keep.demo.etd.IErrorType;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableScheduling;
+package org.keep.demo.utils;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.ServiceLoader;
-
 
 /**
  * @author 肖锦光
  * @version 0.1.0
- * @note Java 实践案例项目 SpringBoot 入口
- * @date 2023/10/18 22:21
+ * @note 反射工具类
+ * @date 2024/1/24 17:43
  */
-@Slf4j
-@SpringBootApplication
-@EnableScheduling
-public class AwesomeJavaDemo {
-
-    public static void main(String[] args) {
-
-        SpringApplication.run(AwesomeJavaDemo.class, args);
-    }
+public class ReflectUtils {
 
     public static List<Class<?>> findClasses(String packageName) {
 
@@ -71,7 +50,7 @@ public class AwesomeJavaDemo {
         }
     }
 
-    private static List<Class<?>> getInterfaceImplementations(Class<?> interfaceClass) {
+    public static List<Class<?>> getInterfaceImplementations(Class<?> interfaceClass) {
 
         List<Class<?>> implementations = new ArrayList<>();
 
@@ -89,21 +68,5 @@ public class AwesomeJavaDemo {
         }
 
         return implementations;
-    }
-
-
-    @Bean
-    public void load() {
-
-//        Class<?> interfaceClass = IErrorType.class;
-//        getInterfaceImplementations(interfaceClass);
-
-//        System.out.println("Implementations of " + interfaceClass.getName() + ":");
-//        for (Class<?> implementation : implementations) {
-//            System.out.println(implementation.getName());
-//        }
-
-        log.info("{}", ErrorManager.getAllError());
-        log.info("{}", AudioTranscodeErrorEnum.AUDIO_G726_TRANSCODE_FAILED.getFullReason());
     }
 }
