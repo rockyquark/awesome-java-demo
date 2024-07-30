@@ -1,0 +1,18 @@
+version: '3.0'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=Hello@2020
+    command: ["mongod", "--replSet", "rs0", "--bind_ip", "0.0.0.0", "--keyFile", "/data/configdb/keyfile"]
+    volumes:
+      - ./data/db:/data/db
+      - ./mongo.conf:/etc/mongo.conf
+      - ./keyfile:/data/configdb/keyfile
+volumes:
+  mongodb:

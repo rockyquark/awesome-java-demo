@@ -1,0 +1,41 @@
+rs.reconfig({
+  _id: "rs0",
+  members: [
+    { _id: 0, host: "114.132.246.98:27017" },
+    { _id: 1, host: "42.194.159.209:27017" },
+    { _id: 2, host: "114.132.246.98:27018" }
+  ]
+})
+
+
+
+mongo
+use admin
+    db.createUser(
+      {
+        user: "admin",
+        pwd: "Hello@2020",
+        roles: ["root"]
+      }
+    )
+
+version: '3.0'
+
+services:
+  mongo_primary:
+    image: mongo:latest
+    container_name: mongo_primary
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=Hello@2020
+    command: ["mongod", "--replSet", "rs0", "--bind_ip", "0.0.0.0", "--keyFile", "/data/configdb/keyfile"]
+    volumes:
+      - ./mongo_master_data:/data/db
+      - ./keyfile:/data/configdb/keyfile
+      - /etc/hosts:/etc/hosts
+
+volumes:
+  mongo_primary:
+
