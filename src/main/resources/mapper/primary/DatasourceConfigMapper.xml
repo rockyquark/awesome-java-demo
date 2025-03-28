@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.keep.demo.mapper.primary.DatasourceConfigMapper">
+  <resultMap id="BaseResultMap" type="org.keep.demo.entity.primary.DatasourceConfig">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="datasource_name" jdbcType="VARCHAR" property="datasourceName" />
+    <result column="db_type" jdbcType="CHAR" property="dbType" />
+    <result column="driver_class" jdbcType="VARCHAR" property="driverClass" />
+    <result column="jdbc_url" jdbcType="VARCHAR" property="jdbcUrl" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="pool_size" jdbcType="INTEGER" property="poolSize" />
+    <result column="min_idle" jdbcType="INTEGER" property="minIdle" />
+    <result column="idle_timeout" jdbcType="INTEGER" property="idleTimeout" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.keep.demo.entity.primary.DatasourceConfig">
+    <result column="password_encrypted" jdbcType="VARBINARY" property="passwordEncrypted" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, datasource_name, db_type, driver_class, jdbc_url, username, pool_size, min_idle, 
+    idle_timeout, `status`, created_at, updated_at
+  </sql>
+  <sql id="Blob_Column_List">
+    password_encrypted
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="org.keep.demo.entity.primary.DatasourceConfigExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from datasource_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="org.keep.demo.entity.primary.DatasourceConfigExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from datasource_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from datasource_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from datasource_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.keep.demo.entity.primary.DatasourceConfigExample">
+    delete from datasource_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.keep.demo.entity.primary.DatasourceConfig">
+    insert into datasource_config (id, datasource_name, db_type, 
+      driver_class, jdbc_url, username, 
+      pool_size, min_idle, idle_timeout, 
+      `status`, created_at, updated_at, 
+      password_encrypted)
+    values (#{id,jdbcType=BIGINT}, #{datasourceName,jdbcType=VARCHAR}, #{dbType,jdbcType=CHAR}, 
+      #{driverClass,jdbcType=VARCHAR}, #{jdbcUrl,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{poolSize,jdbcType=INTEGER}, #{minIdle,jdbcType=INTEGER}, #{idleTimeout,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
+      #{passwordEncrypted,jdbcType=VARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="org.keep.demo.entity.primary.DatasourceConfig">
+    insert into datasource_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="datasourceName != null">
+        datasource_name,
+      </if>
+      <if test="dbType != null">
+        db_type,
+      </if>
+      <if test="driverClass != null">
+        driver_class,
+      </if>
+      <if test="jdbcUrl != null">
+        jdbc_url,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="poolSize != null">
+        pool_size,
+      </if>
+      <if test="minIdle != null">
+        min_idle,
+      </if>
+      <if test="idleTimeout != null">
+        idle_timeout,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="passwordEncrypted != null">
+        password_encrypted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="datasourceName != null">
+        #{datasourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="dbType != null">
+        #{dbType,jdbcType=CHAR},
+      </if>
+      <if test="driverClass != null">
+        #{driverClass,jdbcType=VARCHAR},
+      </if>
+      <if test="jdbcUrl != null">
+        #{jdbcUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="poolSize != null">
+        #{poolSize,jdbcType=INTEGER},
+      </if>
+      <if test="minIdle != null">
+        #{minIdle,jdbcType=INTEGER},
+      </if>
+      <if test="idleTimeout != null">
+        #{idleTimeout,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="passwordEncrypted != null">
+        #{passwordEncrypted,jdbcType=VARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.keep.demo.entity.primary.DatasourceConfigExample" resultType="java.lang.Long">
+    select count(*) from datasource_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update datasource_config
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.datasourceName != null">
+        datasource_name = #{row.datasourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.dbType != null">
+        db_type = #{row.dbType,jdbcType=CHAR},
+      </if>
+      <if test="row.driverClass != null">
+        driver_class = #{row.driverClass,jdbcType=VARCHAR},
+      </if>
+      <if test="row.jdbcUrl != null">
+        jdbc_url = #{row.jdbcUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="row.username != null">
+        username = #{row.username,jdbcType=VARCHAR},
+      </if>
+      <if test="row.poolSize != null">
+        pool_size = #{row.poolSize,jdbcType=INTEGER},
+      </if>
+      <if test="row.minIdle != null">
+        min_idle = #{row.minIdle,jdbcType=INTEGER},
+      </if>
+      <if test="row.idleTimeout != null">
+        idle_timeout = #{row.idleTimeout,jdbcType=INTEGER},
+      </if>
+      <if test="row.status != null">
+        `status` = #{row.status,jdbcType=TINYINT},
+      </if>
+      <if test="row.createdAt != null">
+        created_at = #{row.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.updatedAt != null">
+        updated_at = #{row.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.passwordEncrypted != null">
+        password_encrypted = #{row.passwordEncrypted,jdbcType=VARBINARY},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update datasource_config
+    set id = #{row.id,jdbcType=BIGINT},
+      datasource_name = #{row.datasourceName,jdbcType=VARCHAR},
+      db_type = #{row.dbType,jdbcType=CHAR},
+      driver_class = #{row.driverClass,jdbcType=VARCHAR},
+      jdbc_url = #{row.jdbcUrl,jdbcType=VARCHAR},
+      username = #{row.username,jdbcType=VARCHAR},
+      pool_size = #{row.poolSize,jdbcType=INTEGER},
+      min_idle = #{row.minIdle,jdbcType=INTEGER},
+      idle_timeout = #{row.idleTimeout,jdbcType=INTEGER},
+      `status` = #{row.status,jdbcType=TINYINT},
+      created_at = #{row.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{row.updatedAt,jdbcType=TIMESTAMP},
+      password_encrypted = #{row.passwordEncrypted,jdbcType=VARBINARY}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update datasource_config
+    set id = #{row.id,jdbcType=BIGINT},
+      datasource_name = #{row.datasourceName,jdbcType=VARCHAR},
+      db_type = #{row.dbType,jdbcType=CHAR},
+      driver_class = #{row.driverClass,jdbcType=VARCHAR},
+      jdbc_url = #{row.jdbcUrl,jdbcType=VARCHAR},
+      username = #{row.username,jdbcType=VARCHAR},
+      pool_size = #{row.poolSize,jdbcType=INTEGER},
+      min_idle = #{row.minIdle,jdbcType=INTEGER},
+      idle_timeout = #{row.idleTimeout,jdbcType=INTEGER},
+      `status` = #{row.status,jdbcType=TINYINT},
+      created_at = #{row.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{row.updatedAt,jdbcType=TIMESTAMP}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.keep.demo.entity.primary.DatasourceConfig">
+    update datasource_config
+    <set>
+      <if test="datasourceName != null">
+        datasource_name = #{datasourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="dbType != null">
+        db_type = #{dbType,jdbcType=CHAR},
+      </if>
+      <if test="driverClass != null">
+        driver_class = #{driverClass,jdbcType=VARCHAR},
+      </if>
+      <if test="jdbcUrl != null">
+        jdbc_url = #{jdbcUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="poolSize != null">
+        pool_size = #{poolSize,jdbcType=INTEGER},
+      </if>
+      <if test="minIdle != null">
+        min_idle = #{minIdle,jdbcType=INTEGER},
+      </if>
+      <if test="idleTimeout != null">
+        idle_timeout = #{idleTimeout,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="passwordEncrypted != null">
+        password_encrypted = #{passwordEncrypted,jdbcType=VARBINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.keep.demo.entity.primary.DatasourceConfig">
+    update datasource_config
+    set datasource_name = #{datasourceName,jdbcType=VARCHAR},
+      db_type = #{dbType,jdbcType=CHAR},
+      driver_class = #{driverClass,jdbcType=VARCHAR},
+      jdbc_url = #{jdbcUrl,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      pool_size = #{poolSize,jdbcType=INTEGER},
+      min_idle = #{minIdle,jdbcType=INTEGER},
+      idle_timeout = #{idleTimeout,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      password_encrypted = #{passwordEncrypted,jdbcType=VARBINARY}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.keep.demo.entity.primary.DatasourceConfig">
+    update datasource_config
+    set datasource_name = #{datasourceName,jdbcType=VARCHAR},
+      db_type = #{dbType,jdbcType=CHAR},
+      driver_class = #{driverClass,jdbcType=VARCHAR},
+      jdbc_url = #{jdbcUrl,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      pool_size = #{poolSize,jdbcType=INTEGER},
+      min_idle = #{minIdle,jdbcType=INTEGER},
+      idle_timeout = #{idleTimeout,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -31,12 +31,7 @@ public class PrimaryDataSourceConfig {
     @Bean(name = "primaryDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.primary")
     public DataSource dataSource() {
-        return DataSourceBuilder.create()
-                .driverClassName("com.mysql.cj.jdbc.Driver")
-                .username("public")
-                .password("public")
-                .url("jdbc:mysql://114.132.246.98:3306/primary?allowedPublicKey=true")
-                .build();
+        return DataSourceBuilder.create().build();
     }
 
 

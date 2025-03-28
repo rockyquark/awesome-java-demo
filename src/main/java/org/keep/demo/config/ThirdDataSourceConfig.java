@@ -1,5 +1,6 @@
 package org.keep.demo.config;
 
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -17,7 +18,7 @@ import javax.sql.DataSource;
 /**
  * @author 肖锦光
  * @version 0.1.0
- * @note icvr_speech 数据库配置
+ * @note icvr_third 数据库配置
  * @date 2023/10/19 23:47
  */
 
@@ -25,19 +26,19 @@ import javax.sql.DataSource;
 @Configuration
 public class ThirdDataSourceConfig {
 
-    private static final String MAPPER_LOCATION = "classpath*:/mapper/speech/*.xml";
-    private static final String BASE_PACKAGE = "org.keep.demo.mapper.speech";
+    private static final String MAPPER_LOCATION = "classpath*:/mapper/third/*.xml";
+    private static final String BASE_PACKAGE = "org.keep.demo.mapper.third";
 
-    @Bean(name = "speechDataSource")
+    @Bean(name = "thirdDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.third")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
 
 
-    @Bean(name = "speechSqlSessionFactory")
-    public SqlSessionFactory speechSqlSessionFactory(
-            @Qualifier("speechDataSource") DataSource dataSource) throws Exception {
+    @Bean(name = "thirdSqlSessionFactory")
+    public SqlSessionFactory thirdSqlSessionFactory(
+            @Qualifier("thirdDataSource") DataSource dataSource) throws Exception {
 
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -45,22 +46,26 @@ public class ThirdDataSourceConfig {
         // 配置mybatis 注意是 setMapperLocations() 方法 不是 setConfigLocation()
         // 配置mybatis 注意是 getResources() 方法 不是 getResource()
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
+        // 启用驼峰命名规则
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setMapUnderscoreToCamelCase(true);
+        sqlSessionFactoryBean.setConfiguration(configuration);
 
         return sqlSessionFactoryBean.getObject();
     }
 
 
-    @Bean(name = "speechSqlSessionTemplate")
-    public SqlSessionTemplate speechSqlSessionTemplate(
-            @Qualifier("speechSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
+    @Bean(name = "thirdSqlSessionTemplate")
+    public SqlSessionTemplate thirdSqlSessionTemplate(
+            @Qualifier("thirdSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
     @Bean
-    public MapperScannerConfigurer speechMapperScannerConfigurer() {
+    public MapperScannerConfigurer thirdMapperScannerConfigurer() {
 
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setSqlSessionFactoryBeanName("speechSqlSessionFactory");
+        configurer.setSqlSessionFactoryBeanName("thirdSqlSessionFactory");
         configurer.setBasePackage(BASE_PACKAGE);
         return configurer;
     }

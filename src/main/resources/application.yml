@@ -3,28 +3,49 @@ spring:
     name: awesome-java-demo
   datasource:
     primary:
+      type: com.zaxxer.hikari.HikariDataSource
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://114.132.246.98:3306/primary?allowedPublicKey=true
-      password: public
+      jdbc-url: jdbc:mysql://114.132.246.98:3306/primary?useSSL=false&serverTimezone=Asia/Shanghai
       username: public
+      password: public
+      hikari:
+        maximum-pool-size: 10
+        minimum-idle: 5
+        idle-timeout: 30000
+        pool-name: HikariPool-Primary
     secondary:
+      type: com.zaxxer.hikari.HikariDataSource
       driver-class-name: org.mariadb.jdbc.Driver
-      url: jdbc:mariadb://127.0.0.1:3308/secondary
-      password: public
+      jdbc-url: jdbc:mariadb://114.132.246.98:3307/secondary?useSSL=false&serverTimezone=Asia/Shanghai
       username: public
+      password: public
+      hikari:
+        maximum-pool-size: 10
+        minimum-idle: 5
+        idle-timeout: 30000
+        pool-name: HikariPool-Secondary
     third:
+      type: com.zaxxer.hikari.HikariDataSource
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://114.132.246.98:3306/icvr_speech
-      password: public
+      jdbc-url: jdbc:mysql://114.132.246.98:3308/third?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
       username: public
+      password: public
+      hikari:
+        maximum-pool-size: 10
+        minimum-idle: 5
+        idle-timeout: 30000
+        pool-name: HikariPool-Third
+
 
 
   redis:
-    host: 127.0.0.1
+    host: 114.132.246.98
     port: 6379
+    password: Hello@2020
+
 server:
   address: 0.0.0.0
-  port: 9000
+  port: 19000
 
 rocketmq:
   producer:
@@ -32,5 +53,5 @@ rocketmq:
   consumer:
     group: TEST_MESSAGE
     topic: TEST_MESSAGE
-  name-server: 127.0.0.1:9876
+  name-server: 114.132.246.98:9876
 

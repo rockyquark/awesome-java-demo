@@ -1,6 +1,6 @@
 package org.keep.demo.service;
 
-import org.keep.demo.entity.primary.Member;
+import org.keep.demo.entity.third.Member;
 
 /**
  * @author 肖锦光
@@ -10,5 +10,5 @@ import org.keep.demo.entity.primary.Member;
  */
 public interface IMemberService {
 
-    boolean addMember(Member member);
+    boolean add(Member member);
 }

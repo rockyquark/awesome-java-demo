@@ -21,7 +21,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="org.mariadb.jdbc.Driver"
-                        connectionURL="jdbc:mariadb://127.0.0.1:3308/secondary"
+                        connectionURL="jdbc:mariadb://114.132.246.98:3307/secondary"
                         userId="public"
                         password="public">
         </jdbcConnection>

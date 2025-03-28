@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.keep.demo.mapper.primary.MemberMapper">
-  <resultMap id="BaseResultMap" type="org.keep.demo.entity.primary.Member">
+<mapper namespace="org.keep.demo.mapper.third.MemberMapper">
+  <resultMap id="BaseResultMap" type="org.keep.demo.entity.third.Member">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="phone_number" jdbcType="INTEGER" property="phoneNumber" />
+    <result column="phone_number" jdbcType="BIGINT" property="phoneNumber" />
     <result column="age" jdbcType="TINYINT" property="age" />
-    <result column="hobbies" jdbcType="VARCHAR" property="hobbies" />
-    <result column="skill" jdbcType="VARCHAR" property="skill" />
     <result column="education" jdbcType="VARCHAR" property="education" />
     <result column="marriage" jdbcType="BIT" property="marriage" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.keep.demo.entity.third.Member">
+    <result column="hobbies" jdbcType="LONGVARCHAR" property="hobbies" />
+    <result column="skill" jdbcType="LONGVARCHAR" property="skill" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,9 +72,28 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, phone_number, age, hobbies, skill, education, marriage
+    id, `name`, phone_number, age, education, marriage
   </sql>
-  <select id="selectByExample" parameterType="org.keep.demo.entity.primary.MemberExample" resultMap="BaseResultMap">
+  <sql id="Blob_Column_List">
+    hobbies, skill
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="org.keep.demo.entity.third.MemberExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from member
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="org.keep.demo.entity.third.MemberExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -86,9 +107,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from member
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -96,21 +119,21 @@
     delete from member
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="org.keep.demo.entity.primary.MemberExample">
+  <delete id="deleteByExample" parameterType="org.keep.demo.entity.third.MemberExample">
     delete from member
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="org.keep.demo.entity.primary.Member">
+  <insert id="insert" parameterType="org.keep.demo.entity.third.Member">
     insert into member (id, `name`, phone_number, 
-      age, hobbies, skill, 
-      education, marriage)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=INTEGER}, 
-      #{age,jdbcType=TINYINT}, #{hobbies,jdbcType=VARCHAR}, #{skill,jdbcType=VARCHAR}, 
-      #{education,jdbcType=VARCHAR}, #{marriage,jdbcType=BIT})
+      age, education, marriage, 
+      hobbies, skill)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=BIGINT}, 
+      #{age,jdbcType=TINYINT}, #{education,jdbcType=VARCHAR}, #{marriage,jdbcType=BIT}, 
+      #{hobbies,jdbcType=LONGVARCHAR}, #{skill,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="org.keep.demo.entity.primary.Member">
+  <insert id="insertSelective" parameterType="org.keep.demo.entity.third.Member">
     insert into member
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -125,17 +148,17 @@
       <if test="age != null">
         age,
       </if>
-      <if test="hobbies != null">
-        hobbies,
-      </if>
-      <if test="skill != null">
-        skill,
-      </if>
       <if test="education != null">
         education,
       </if>
       <if test="marriage != null">
         marriage,
+      </if>
+      <if test="hobbies != null">
+        hobbies,
+      </if>
+      <if test="skill != null">
+        skill,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -146,16 +169,10 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="phoneNumber != null">
-        #{phoneNumber,jdbcType=INTEGER},
+        #{phoneNumber,jdbcType=BIGINT},
       </if>
       <if test="age != null">
         #{age,jdbcType=TINYINT},
-      </if>
-      <if test="hobbies != null">
-        #{hobbies,jdbcType=VARCHAR},
-      </if>
-      <if test="skill != null">
-        #{skill,jdbcType=VARCHAR},
       </if>
       <if test="education != null">
         #{education,jdbcType=VARCHAR},
@@ -163,9 +180,15 @@
       <if test="marriage != null">
         #{marriage,jdbcType=BIT},
       </if>
+      <if test="hobbies != null">
+        #{hobbies,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="skill != null">
+        #{skill,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="org.keep.demo.entity.primary.MemberExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="org.keep.demo.entity.third.MemberExample" resultType="java.lang.Long">
     select count(*) from member
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -181,16 +204,10 @@
         `name` = #{row.name,jdbcType=VARCHAR},
       </if>
       <if test="row.phoneNumber != null">
-        phone_number = #{row.phoneNumber,jdbcType=INTEGER},
+        phone_number = #{row.phoneNumber,jdbcType=BIGINT},
       </if>
       <if test="row.age != null">
         age = #{row.age,jdbcType=TINYINT},
-      </if>
-      <if test="row.hobbies != null">
-        hobbies = #{row.hobbies,jdbcType=VARCHAR},
-      </if>
-      <if test="row.skill != null">
-        skill = #{row.skill,jdbcType=VARCHAR},
       </if>
       <if test="row.education != null">
         education = #{row.education,jdbcType=VARCHAR},
@@ -198,7 +215,27 @@
       <if test="row.marriage != null">
         marriage = #{row.marriage,jdbcType=BIT},
       </if>
+      <if test="row.hobbies != null">
+        hobbies = #{row.hobbies,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.skill != null">
+        skill = #{row.skill,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update member
+    set id = #{row.id,jdbcType=INTEGER},
+      `name` = #{row.name,jdbcType=VARCHAR},
+      phone_number = #{row.phoneNumber,jdbcType=BIGINT},
+      age = #{row.age,jdbcType=TINYINT},
+      education = #{row.education,jdbcType=VARCHAR},
+      marriage = #{row.marriage,jdbcType=BIT},
+      hobbies = #{row.hobbies,jdbcType=LONGVARCHAR},
+      skill = #{row.skill,jdbcType=LONGVARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -207,33 +244,25 @@
     update member
     set id = #{row.id,jdbcType=INTEGER},
       `name` = #{row.name,jdbcType=VARCHAR},
-      phone_number = #{row.phoneNumber,jdbcType=INTEGER},
+      phone_number = #{row.phoneNumber,jdbcType=BIGINT},
       age = #{row.age,jdbcType=TINYINT},
-      hobbies = #{row.hobbies,jdbcType=VARCHAR},
-      skill = #{row.skill,jdbcType=VARCHAR},
       education = #{row.education,jdbcType=VARCHAR},
       marriage = #{row.marriage,jdbcType=BIT}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="org.keep.demo.entity.primary.Member">
+  <update id="updateByPrimaryKeySelective" parameterType="org.keep.demo.entity.third.Member">
     update member
     <set>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="phoneNumber != null">
-        phone_number = #{phoneNumber,jdbcType=INTEGER},
+        phone_number = #{phoneNumber,jdbcType=BIGINT},
       </if>
       <if test="age != null">
         age = #{age,jdbcType=TINYINT},
-      </if>
-      <if test="hobbies != null">
-        hobbies = #{hobbies,jdbcType=VARCHAR},
-      </if>
-      <if test="skill != null">
-        skill = #{skill,jdbcType=VARCHAR},
       </if>
       <if test="education != null">
         education = #{education,jdbcType=VARCHAR},
@@ -241,18 +270,63 @@
       <if test="marriage != null">
         marriage = #{marriage,jdbcType=BIT},
       </if>
+      <if test="hobbies != null">
+        hobbies = #{hobbies,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="skill != null">
+        skill = #{skill,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="org.keep.demo.entity.primary.Member">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.keep.demo.entity.third.Member">
     update member
     set `name` = #{name,jdbcType=VARCHAR},
-      phone_number = #{phoneNumber,jdbcType=INTEGER},
+      phone_number = #{phoneNumber,jdbcType=BIGINT},
       age = #{age,jdbcType=TINYINT},
-      hobbies = #{hobbies,jdbcType=VARCHAR},
-      skill = #{skill,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      marriage = #{marriage,jdbcType=BIT},
+      hobbies = #{hobbies,jdbcType=LONGVARCHAR},
+      skill = #{skill,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.keep.demo.entity.third.Member">
+    update member
+    set `name` = #{name,jdbcType=VARCHAR},
+      phone_number = #{phoneNumber,jdbcType=BIGINT},
+      age = #{age,jdbcType=TINYINT},
       education = #{education,jdbcType=VARCHAR},
       marriage = #{marriage,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByExampleWithBLOBsWithRowbounds" parameterType="org.keep.demo.entity.third.MemberExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from member
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExampleWithRowbounds" parameterType="org.keep.demo.entity.third.MemberExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from member
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

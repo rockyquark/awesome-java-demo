@@ -1,4 +1,4 @@
-package org.keep.demo.entity.primary;
+package org.keep.demo.entity.third;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -244,52 +244,52 @@ public class MemberExample {
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberEqualTo(Integer value) {
+        public Criteria andPhoneNumberEqualTo(Long value) {
             addCriterion("phone_number =", value, "phoneNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberNotEqualTo(Integer value) {
+        public Criteria andPhoneNumberNotEqualTo(Long value) {
             addCriterion("phone_number <>", value, "phoneNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberGreaterThan(Integer value) {
+        public Criteria andPhoneNumberGreaterThan(Long value) {
             addCriterion("phone_number >", value, "phoneNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPhoneNumberGreaterThanOrEqualTo(Long value) {
             addCriterion("phone_number >=", value, "phoneNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberLessThan(Integer value) {
+        public Criteria andPhoneNumberLessThan(Long value) {
             addCriterion("phone_number <", value, "phoneNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andPhoneNumberLessThanOrEqualTo(Long value) {
             addCriterion("phone_number <=", value, "phoneNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberIn(List<Integer> values) {
+        public Criteria andPhoneNumberIn(List<Long> values) {
             addCriterion("phone_number in", values, "phoneNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberNotIn(List<Integer> values) {
+        public Criteria andPhoneNumberNotIn(List<Long> values) {
             addCriterion("phone_number not in", values, "phoneNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberBetween(Integer value1, Integer value2) {
+        public Criteria andPhoneNumberBetween(Long value1, Long value2) {
             addCriterion("phone_number between", value1, value2, "phoneNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPhoneNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andPhoneNumberNotBetween(Long value1, Long value2) {
             addCriterion("phone_number not between", value1, value2, "phoneNumber");
             return (Criteria) this;
         }
@@ -351,146 +351,6 @@ public class MemberExample {
 
         public Criteria andAgeNotBetween(Byte value1, Byte value2) {
             addCriterion("age not between", value1, value2, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesIsNull() {
-            addCriterion("hobbies is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesIsNotNull() {
-            addCriterion("hobbies is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesEqualTo(String value) {
-            addCriterion("hobbies =", value, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesNotEqualTo(String value) {
-            addCriterion("hobbies <>", value, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesGreaterThan(String value) {
-            addCriterion("hobbies >", value, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesGreaterThanOrEqualTo(String value) {
-            addCriterion("hobbies >=", value, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesLessThan(String value) {
-            addCriterion("hobbies <", value, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesLessThanOrEqualTo(String value) {
-            addCriterion("hobbies <=", value, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesLike(String value) {
-            addCriterion("hobbies like", value, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesNotLike(String value) {
-            addCriterion("hobbies not like", value, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesIn(List<String> values) {
-            addCriterion("hobbies in", values, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesNotIn(List<String> values) {
-            addCriterion("hobbies not in", values, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesBetween(String value1, String value2) {
-            addCriterion("hobbies between", value1, value2, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andHobbiesNotBetween(String value1, String value2) {
-            addCriterion("hobbies not between", value1, value2, "hobbies");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillIsNull() {
-            addCriterion("skill is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillIsNotNull() {
-            addCriterion("skill is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillEqualTo(String value) {
-            addCriterion("skill =", value, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillNotEqualTo(String value) {
-            addCriterion("skill <>", value, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillGreaterThan(String value) {
-            addCriterion("skill >", value, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillGreaterThanOrEqualTo(String value) {
-            addCriterion("skill >=", value, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillLessThan(String value) {
-            addCriterion("skill <", value, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillLessThanOrEqualTo(String value) {
-            addCriterion("skill <=", value, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillLike(String value) {
-            addCriterion("skill like", value, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillNotLike(String value) {
-            addCriterion("skill not like", value, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillIn(List<String> values) {
-            addCriterion("skill in", values, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillNotIn(List<String> values) {
-            addCriterion("skill not in", values, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillBetween(String value1, String value2) {
-            addCriterion("skill between", value1, value2, "skill");
-            return (Criteria) this;
-        }
-
-        public Criteria andSkillNotBetween(String value1, String value2) {
-            addCriterion("skill not between", value1, value2, "skill");
             return (Criteria) this;
         }
 

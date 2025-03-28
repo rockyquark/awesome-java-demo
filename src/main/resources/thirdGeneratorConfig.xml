@@ -23,28 +23,27 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://114.132.246.98:3306/icvr_speech"
+                        connectionURL="jdbc:mysql://114.132.246.98:3308/third?allowedPublicKey=true"
                         userId="public"
                         password="public">
         </jdbcConnection>
 
         <!-- 实体类的位置 -->
         <javaModelGenerator targetProject="src\main\java"
-                            targetPackage="org.keep.demo.entity.speech">
+                            targetPackage="org.keep.demo.entity.third">
         </javaModelGenerator>
 
         <!-- mapper xml的位置 -->
         <sqlMapGenerator targetProject="src\main\resources"
-                         targetPackage="mapper/speech"/>
+                         targetPackage="mapper/third"/>
 
         <!-- mapper类的位置 -->
         <javaClientGenerator targetProject="src\main\java"
-                             targetPackage="org.keep.demo.mapper.speech"
+                             targetPackage="org.keep.demo.mapper.third"
                              type="XMLMAPPER" />
 
 
-        <table tableName="cps_error_record" domainObjectName="ErrorRecord"/>
-        <table tableName="cps_audio_task_schedule" domainObjectName="AudioTaskSchedule"/>
+        <table tableName="member" domainObjectName="Member"/>
 
     </context>
 </generatorConfiguration>

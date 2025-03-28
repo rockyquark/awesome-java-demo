@@ -1,8 +1,8 @@
 package org.keep.demo.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.keep.demo.entity.primary.Member;
-import org.keep.demo.mapper.primary.MemberMapper;
+import org.keep.demo.entity.third.Member;
+import org.keep.demo.mapper.third.MemberMapper;
 import org.keep.demo.service.IMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class IMemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public boolean addMember(Member member) {
+    public boolean add(Member member) {
 
         if (member == null) {
             throw new IllegalArgumentException("添加成员操作，参数 `member` 不能为空!");
