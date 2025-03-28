@@ -33,4 +33,10 @@ public class TaskController {
         taskEntrance.producer();
         return ResponseEntity.ok("添加下载任务成功");
     }
+
+    @PostMapping("push")
+    public ResponseEntity<String> pushTask() {
+        taskEntrance.producer();
+        return ResponseEntity.ok("添加下载任务成功");
+    }
 }

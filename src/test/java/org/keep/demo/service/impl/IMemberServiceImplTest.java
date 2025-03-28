@@ -76,4 +76,21 @@ class IMemberServiceImplTest {
         boolean add3 = memberService.add(member);
         System.out.printf("%s,%s,%s%n", add1, add2, add3);
     }
+
+    @Test
+    void loopAdd() {
+        for (;;) {
+            try {
+                add();
+            } catch (Exception e) {}
+        }
+    }
+
+    @Test
+    void concurrent() throws InterruptedException {
+        for (int i = 0; i < 50; i++) {
+            new Thread(this::loopAdd).start();
+        }
+        Thread.currentThread().join();
+    }
 }
