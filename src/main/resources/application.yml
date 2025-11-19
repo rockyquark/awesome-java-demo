@@ -35,17 +35,37 @@ spring:
         minimum-idle: 5
         idle-timeout: 30000
         pool-name: HikariPool-Third
-
-
+  elasticsearch:
+    uris:
+      - https://192.168.186.10:9200
+      - https://192.168.186.20:9200
+      - https://192.168.186.30:9200
+    username: elastic
+    password: 8J09w6S6U0Q47DRqEN0y
+    ssl:
+      enabled: true
+      verification-mode: none # 关闭证书校验（自签名时用）
 
   redis:
-    host: 114.132.246.98
-    port: 6379
-    password: Hello@2020
+    cluster:
+      nodes:
+        - 192.168.186.10:6379
+        - 192.168.186.20:6379
+        - 192.168.186.30:6379
+        - 192.168.186.40:6379
+        - 192.168.186.50:6379
+        - 192.168.186.60:6379
+    password: Hello@2025
+    timeout: 3000ms
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 1
 
 server:
   address: 0.0.0.0
-  port: 19000
+  port: 8080
 
 rocketmq:
   producer:

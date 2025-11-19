@@ -1,6 +1,8 @@
 package org.keep.demo.task;
 
 import lombok.extern.slf4j.Slf4j;
+import org.keep.demo.redis.ComplianceTaskManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +18,18 @@ import java.util.Date;
 @Slf4j
 public class ScheduledTask {
 
-    @Scheduled(cron = "10 * * * * *")
-    @Scheduled(cron = "5 * * * * *")
+    private final ComplianceTaskManager complianceTaskManager;
+
+    @Autowired
+    public ScheduledTask(ComplianceTaskManager complianceTaskManager) {
+        this.complianceTaskManager = complianceTaskManager;
+    }
+
     public void printDate() {
-        log.info("current date={}", new Date());
+       try {
+           complianceTaskManager.pullTask();
+       } catch (Exception e) {
+           log.error(e.getMessage(), e);
+       }
     }
 }
