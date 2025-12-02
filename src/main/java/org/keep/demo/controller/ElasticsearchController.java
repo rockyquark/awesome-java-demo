@@ -3,27 +3,16 @@ package org.keep.demo.controller;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.mapper.ObjectMapper;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.xcontent.XContentType;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -31,52 +20,47 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ElasticsearchController {
 
-    private final RestHighLevelClient client;
+    private final ElasticsearchOperations esOps;
+
     private final String INDEX_NAME = "people";
 
+    /** 插入数据 */
     @PostMapping("/insert")
     public ResponseEntity<String> insert(@RequestBody JSONObject data) {
         try {
-            IndexRequest request = new IndexRequest(INDEX_NAME)
-                    .id(UUID.randomUUID().toString())
-                    .source(data, XContentType.JSON);
+            String id = UUID.randomUUID().toString();
+            esOps.save(data, INDEX_NAME);
 
-            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
-            return ResponseEntity.ok("Inserted with id: " + response.getId());
-
+            return ResponseEntity.ok("Inserted with id: " + id);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Insert failed: " + e.getMessage());
+            log.error("Insert error", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Insert failed: " + e.getMessage());
         }
     }
 
+    /** 查询全部 */
     @GetMapping("/all")
     public ResponseEntity<List<JSONObject>> getAll() {
         try {
-            SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
-            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-            sourceBuilder.query(QueryBuilders.matchAllQuery());
-            sourceBuilder.size(1000); // 限制最大返回数量
-            searchRequest.source(sourceBuilder);
+            Query query = NativeQuery.builder()
+                    .withQuery(q -> q.matchAll(m -> m))
+                    .withPageable(org.springframework.data.domain.PageRequest.of(0, 1000))
+                    .build();
 
-            SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+            SearchHits<JSONObject> searchHits =
+                    esOps.search(query, JSONObject.class);
 
+            List<JSONObject> result = new ArrayList<>();
 
-            List<JSONObject> people = Arrays.stream(searchResponse.getHits().getHits())
-                    .map(hit -> {
-                        try {
-                            return JSONObject.parseObject(hit.getSourceAsString());
-                        } catch (Exception e) {
-                            return null;
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+            for (SearchHit<JSONObject> hit : searchHits) {
+                result.add(hit.getContent());
+            }
 
-            return ResponseEntity.ok(people);
+            return ResponseEntity.ok(result);
 
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error("Search error", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
